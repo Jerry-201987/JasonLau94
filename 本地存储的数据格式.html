@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="js/jquery.min.js"></script>
+  </head>
+  <body>
+    <script>
+      var todolist = [
+        {
+          title: "我今天吃八个馒头",
+          done: false
+        },
+        {
+          title: "我今天学习jq",
+          done: false
+        }
+      ];
+      // console.log(todolist); // 得到的是数组，数组中的内容是 对象
+      // // 数组-->字符串
+      // console.log(JSON.stringify(todolist)); // [{"title":"我今天吃八个馒头","done":false},{"title":"我今天学习jq","done":false}]
+      // console.log(typeof JSON.stringify(todolist)); //string
+      // 1. 本地存储里面只能存储字符串的数据格式 把我们的数组对象转换为字符串格式 JSON.stringify()
+      // 设置
+      localStorage.setItem("todo", JSON.stringify(todolist));
+      // 获取
+      var data = localStorage.getItem("todo");
+      console.log(typeof data); // string
+      console.log(data[0].title); // undefined
+      console.log("----------------------");
+      // 2. 获取本地存储的数据 我们需要把里面的字符串数据转换为 对象格式 JSON.parse()
+      data = JSON.parse(data);
+      console.log(data);
+      console.log(typeof data); // object (对象组成的数组)
+      console.log(data[0].title); //我今天吃八个馒头
+    </script>
+  </body>
+</html>
