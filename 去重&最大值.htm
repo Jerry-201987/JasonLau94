@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>OldRain</title>
+  </head>
+
+  <body>
+    <input type="button" value="点我试试" id="btn" />
+    <input type="text" placeholder="jerryLau" />
+    <br />
+    <b
+      >pop与shift相反(删除尾首),<br />push与unshift相反(添加尾首),<br />join数组变字符串,<br />split字符串变数组,<br />splice数组同substr字符串(索引,长度),<br />slice数组同substring字符串(索引∈[a,b)),<br />concat皆可，replace字符串</b
+    >
+    <p>
+      减少http请求次数：CSS Sprites,
+      JS、CSS源码压缩、图片大小控制合适；网页Gzip，CDN托管，data缓存
+      ，图片服务器。 前端模板
+      JS+数据，减少由于HTML标签导致的带宽浪费，前端用变量保存AJAX请求结果，每次操作本地变量，不用请求，减少请求次数
+      用innerHTML代替DOM操作，减少DOM操作次数，优化javascript性能。
+      当需要设置的样式很多时设置className而不是直接操作style。
+      少用全局变量、缓存DOM节点查找的结果。减少IO读取操作。 避免使用CSS
+      Expression（css表达式)又称Dynamic properties(动态属性)。
+      图片预加载，将样式表放在顶部，将脚本放在底部 加上时间戳。
+    </p>
+  </body>
+</html>
+<script>
+  // var btn = document.getElementById('btn')
+  // var num = 0
+  // btn.onclick = function () {
+  // console.log(num++)
+  // }
+  // var str = ''
+  // for (var i = 0; i < 5; i++) {
+  // for (var j = 0; j <= i; j++) {
+  // str += i * 5 + j + 1 + '\t'
+  // }
+  // str += '\n'
+  // }
+  // console.log(str)
+  // function add(x) {
+  // var sum = x
+  // function lau(y) {
+  // sum += y
+  // return lau
+  // }
+  // lau.toString=function(){
+  // return sum
+  // }
+  // return lau
+  // }
+  // console.log(add(1)(2)(3).toString().toString())  //toString()类型转换:function->number->string
+  console.log([1,2,3].map(parseInt))//[1,NaN,NaN]
+  console.log([].concat(...[1, [2, 3], [4, 5]]));
+  console.log([[1, 2], [3, 4], 5].flat()); //n可为空，也可为数字
+  console.log(([1, 2, 3].join("") - 0).toString().split("")); //数组-字符串-数字-字符串-数组
+  var oStringObject = new String("hello world");//typeof为object
+  console.log(oStringObject.valueOf() === oStringObject.toString());//为true，对象-字符串
+  var str = " abc def ghi ";
+  console.log(str.trim()); //首尾去空格
+  console.log(str.replace(/\s/g, "")); //去所有空格
+  var date = new Date();
+  var now = date.getTime(); //至今距1970.1.1的毫秒数
+  var birth = new Date(1994, 5, 22).getTime();
+  var days = Math.round((now - birth) / (3600000 * 24));
+  console.log(days); //出生天数
+  console.log("abc\123\890\ds"); //abcS890ds
+  console.log("abc\\123\\890\\ds"); //abc\123\890\ds
+  console.log("abc\\123\\890\\ds".split("\\")); //["abc", "123", "890", "ds"]
+  var a = [2, 0, 6, 1, 77, 0, 52, 0, 25, 77];
+  var b = [2, 3, 6, 1, 77, 0, 52, 25];
+  var s1 = "赏花归去马如飞酒力微醒时已暮";
+  console.log(a.splice(2, 4)); //索引2开始，截取4个 (下标,长度)
+  console.log(a); //剩下6个
+  console.log(a.slice(2, 4)); // 2≤截取索引<4 索引2~3
+  console.log(a.toString());
+  console.log(b.join("$")); //数组变字符串
+  console.log(b.join("$").split("")); //字符串变数组
+  console.log(b.join("$").split("$")); //字符串变数组，去掉$
+  console.log(b.pop()); //删除的最后一个元素
+  console.log(b.push("tom", "jack")); //添加到末尾，求总个数
+  console.log(b.shift()); //删除的第一个元素
+  console.log(b.unshift("tom", "jack")); //添加到开头，求总个数
+  console.log(b);
+  console.log(b.sort()); //排序,数字前字母后,首位字母/数字前
+  console.log(b.reverse()); //翻转
+  console.log(s1.substr(3, 8)); //下标(即索引),长度(无长度则从下标开始,截取完) 索引3~10
+  console.log(s1.substring(3, 8)); //3≤截取索引<8 索引3~7
+  b.sort(function(x, y) {
+    return x - y;
+  });
+  console.log(b);
+  b.sort(function(x, y) {
+    return y - x;
+  });
+  console.log(b);
+  // b.sort(function(x,y){
+  // return x+y
+  // })
+  // console.log(b)
+
+  // 去重
+  // 方法1--直观但麻烦
+  // var newA = []
+  // for (var i = 0; i < a.length; i++) {
+  // if (a[i] != 0 && a[i] != 77) {
+  // newA[newA.length] = a[i]
+  // }
+  // }
+  // console.log(newA)
+  // 方法2--map对象、filter方法
+  // var unique = function (a) {
+  // const res = new Map()
+  // return a.filter(x => !res.has(x) && res.set(x, 1))
+  // }
+  // console.log(unique(a))
+  // 方法3--set对象、Array.from方法
+  // function unique(a){
+  // return Array.from(new Set(a))
+  // }
+  // console.log(unique(a))
+  // 方法4--es6
+  // console.log([...new Set(a)])
+  // 方法5--indexOf
+  var arr=['a','b','a','b','a']
+  var newArr = [];
+  function unique(arr) {
+    for (var i = 0; i < arr.length; i++) {
+      if (newArr.indexOf(arr[i]) === -1) {
+        newArr.push(arr[i]);
+      }
+    }
+    return newArr;
+  }
+  console.log(unique(arr));
+  // 方法6--reduce+includes
+  function unique(a) {
+    return a.reduce(
+      (pre, cur) => (pre.includes(cur) ? pre : [...pre, cur]),
+      []
+    );
+  }
+  // let arr = [1, 2, 3, 4, 4, 1];
+  // let newArr = arr.reduce((pre, cur) => {
+  // if (!pre.includes(cur)) {
+  // return pre.concat(cur);
+  // } else {
+  // return pre;
+  // }
+  // }, []);
+  // console.log(newArr);
+  let arr = [1, 2, 1, 2, 1, 3, 3, 3, 6, 4];
+  const singleNum = arr =>
+    arr.filter(i => arr.indexOf(i) === arr.lastIndexOf(i));
+  console.log(singleNum(arr).join(","));
+  // function singleNum(arr) {
+  //     return arr.filter(function(i) {
+  //       return arr.indexOf(i) === arr.lastIndexOf(i);
+  //     });
+  //   }
+  //   console.log(singleNum(arr));
+  
+  // 最大值
+  // 方法1
+  // console.log(Math.max.apply(null,a))
+  // 方法2--es6
+  // console.log(Math.max(...a))
+
+  // 斐波拉契[1,1,2,3,5,8,13,21……]
+  // function fib(n) {
+  // if (n <= 0) return 0
+  // if (n <= 2) return 1
+  // return fib(n - 1) + fib(n - 2)
+  // }
+  // console.log(fib(30))
+  function fib(n, a = 1, b = 1) {
+    if (n <= 2) return b;
+    return fib(n - 1, b, a + b);
+  }
+  // let fib = n => (n > 1 ? fib(n - 1) + fib(n - 2) : n);
+  //箭头函数
+  console.log(
+    [1, 2, 3, 4, 5, 6].map(x => {
+      return x * x;
+    })
+  );
+  console.log([1, 2, 3, 4, 5, 6].map(x => x * x));
+  console.log(
+    [1, 2, 3, 4, 5, 6].map(function(x) {
+      return x * x;
+    })
+  );
+  //随机排序
+  var ar = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  ar.sort(function() {
+    return Math.random() - 0.5;
+  });
+  console.log(ar);
+  ar.sort(function() {
+    return Math.random() > 0.5 ? -1 : 1;
+  });
+  console.log(ar);
+  //洗牌算法
+  // function randSort(ar) {
+  // for (var i = 0, len = ar.length; i < len; i++) {
+  // var index = Math.floor(Math.random() * len);
+  // var temp = ar[index];
+  // ar[index] = ar[i];
+  // ar[i] = temp;
+  // }
+  // return ar
+  // }
+  // console.log(randSort(ar))
+  var str = JSON.stringify(obj); //对象转字符串
+  var obj = JSON.parse(str); //字符串转对象
+  var obj = { a: 25, b: 30, c: 15 };
+  var newObj = JSON.parse(JSON.stringify(obj));
+  newObj.a = 500;
+  console.log(newObj); //对象深拷贝
+  console.log("M20*1.5-5H".replace(/[a-zA-Z\-*]+/g, "").split("")); //得到数字201.55
+  var s1 = "淡泊以明志congratulations宁静以致远";
+  var reg = /[\u4e00-\u9fa5]/g;
+  console.log(s1.match(reg).join("")); //取汉字
+  console.log(s1.replace(reg, "")); //删汉字
+  console.log('<div class="red">abc,1234</div><p>defg</p>'.replace(/<[^<>]+>/g, ""))//删HTML标签
+  //伪数组转真数组
+  let arr = { "0": "a", "1": "b", "2": "c", length: 3 };
+  // let newArr = [].slice.call(arr);
+  let newArr = Array.from(arr)
+  console.log(newArr)
+  //拍平数组
+  let a = [1, 2, [3, 4, 1, 2], 3, 4, 5];
+    // function fn(a) {
+    //   return a.reduce((pre, cur) => {
+    //     return pre.concat(Array.isArray(cur) ? fn(cur) : cur);
+    //   }, []);
+    // }//方法1
+    // console.log([].concat(...a));//方法2
+    // console.log(a.flat());//方法3
+    // const flatten = a => a.toString().split(',').map(item => +item)//方法4
+    function fn(a) {
+      let a1 = [];
+      a.forEach(val => {
+        if (val instanceof Array) {
+          a1 = a1.concat(fn(val));
+        } else {
+          a1.push(val);
+        }
+      });
+      return a1;
+    }
+    console.log(fn(a));//方法5，最原生
+</script>
