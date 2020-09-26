@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./jquery-1.12.4.js"></script>
+  </head>
+  <style>
+    .container {
+      box-sizing: border-box;
+      font-size: 0.16rem;
+      padding: 50% 0.45rem 1.27rem 0.45rem;
+      display: flex;
+    }
+    .left {
+      width: 30%;
+      cursor: pointer;
+      margin-right: 0.25rem;
+    }
+    .center {
+      width: 30%;
+      flex: 1;
+      margin-right: 0.25rem;
+    }
+    .right {
+      width: 30%;
+      flex: 1;
+      margin-right: 0.25rem;
+    }
+    .pop {
+      display: none;
+      width: 250px;
+      height: 250px;
+      border: 1px solid #ccc;
+      top: 50%;
+      left: 30%;
+      position: absolute;
+      background: #ccc;
+    }
+    .truePop {
+      display: none;
+      width: 250px;
+      height: 250px;
+      border: 1px solid #ccc;
+      top: 50%;
+      left: 30%;
+      position: absolute;
+      text-align: center;
+      line-height: 250px;
+      background: #ccc;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <a target="_blank" class="left">
+        <img src="./928.png" alt="" />
+      </a>
+      <a target="_blank" class="center">
+        <img src="./928.png" alt="" />
+      </a>
+      <a target="_blank" class="right">
+        <img src="./928.png" alt="" />
+      </a>
+    </div>
+    <!-- 弹框 -->
+    <div class="pop">
+      <input type="text" placeholder="手机号" class="tel" />
+      <input type="text" placeholder="验证码" class="yzm" /><button>
+        点击验证码
+      </button>
+      <div>
+        <button class="confirm">确定充值</button
+        ><button class="cancel">取消</button>
+      </div>
+    </div>
+    <!-- 生效弹框 -->
+    <div class="truePop">
+      <p>您已充值成功！<button>退出</button></p>
+    </div>
+  </body>
+  <script>
+    $(".left").on("click", function () {
+      //   $(".pop").appendTo(".left");
+      $(".pop").show();
+      $(".confirm").click(function () {
+        $(".pop").hide();
+        $(".truePop").show();
+      });
+      $(".cancel").click(function () {
+        $(".pop").hide();
+      });
+    });
+
+    $(".truePop").click("button", function () {
+      $(this).hide();
+    });
+  </script>
+</html>
