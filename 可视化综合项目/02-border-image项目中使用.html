@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .panel {
+        width: 300px;
+        height: 150px;
+        /* 注意1：设置边框图像，一定要设置边框，若不设置，则不能显示图像 */
+        border: 10px solid red;
+        /* 分别设置每一个边框的宽度，是为了能够完整的显示背景图 */
+        border-width: 51px 40px 22px 128px;
+        /* border-top-width: 51px;
+        border-right-width: 40px;
+        border-bottom-width: 22px;
+        border-left-width: 128px; */
+        /* 设置了边框，盒子就变大了，不想变大，就用内减模型 */
+        box-sizing: border-box;
+        /* 盒子还是原来那么大，那内容就变小了，怎么办？子绝父相 */
+        position: relative;
+        /* 边框等下要用图片来修饰 */
+        border-image-source: url("./images/border.png");
+        /* 注意2：裁剪的数量不要加px */
+        border-image-slice: 51 40 22 128;
+        /* 注意3：为了让每一个边框图像都完整的显示出来，那边框宽度一定要和裁剪的数量一致 */
+        border-image-width: 51px 40px 22px 128px;
+        border-image-repeat: stretch;
+      }
+      .inner {
+        position: absolute;
+        top: -51px;
+        right: -40px;
+        bottom: -22px;
+        left: -128px;
+        padding: 20px 30px;
+        color: pink;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="panel">
+      <div class="inner">你好呀</div>
+      <!-- 外盒子放边框头像，里面盒子放内容 -->
+    </div>
+  </body>
+</html>
