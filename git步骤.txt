@@ -1,0 +1,36 @@
+git init（初始化一个仓库）
+git add .
+git commit -m "描述提交的代码"
+
+修改邮箱和用户名
+方法①
+git config --global user.email "2273083907@qq.com"
+git config --global user.name "keji"
+方法② 退出再登录
+git config --global --unset user.email
+git config --global --unset user.name
+查看设置的邮箱和用户名
+git config user.email
+git config user.name
+
+git log查看提交日志
+git status查看状态
+nothing to commit,working tree clean. 工作区干净(表示commit提交代码成功)
+git log查看日志，查看提交内容
+
+git reset --hard 版本号	版本回滚(穿梭)
+git log --oneline	用一行查看日志，没有作者和日期，只有版本号和描述信息
+git reflog	查看所有日志，包括回滚的日志
+
+github新建一个空的远程仓库，关联已有的本地仓库
+新建远程仓库的时候，不要打勾
+
+一个仓库管理一个文件夹，一个项目
+新建仓库，就有默认的主分支master，用master做版本发布
+开发分支dev，没有问题的代码才合并到master分支上
+	
+新建分支	git branch 分支名
+切换分支	git checkout 分支名
+合并分支	git merge 分支名
+删除分支	git branch -d 分支名
+查看分支	git branch
