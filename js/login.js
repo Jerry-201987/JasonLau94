@@ -1,0 +1,6 @@
+$.extend({
+    login: {
+        main() {
+        }
+    }
+})

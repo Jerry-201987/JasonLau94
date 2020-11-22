@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./js/jquery-1.12.4.js"></script>
+    <script src="./js/artTemplate.js"></script>
+    <style>
+      .container {
+        width: 600px;
+        margin: 100px auto;
+      }
+
+      .tb {
+        width: 100%;
+        text-align: center;
+      }
+
+      .tb td,
+      .tb th {
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <table class="tb">
+        <tr>
+          <th>
+            <input type="checkbox" class="checkAll" />
+          </th>
+          <th>名称</th>
+          <th>价格</th>
+          <th>数量</th>
+          <th>小计</th>
+          <th>操作</th>
+        </tr>
+        <script id="temp" type="text/html">
+          {{each $data item i}}
+          <tr>
+            <td><input type="checkbox" /></td>
+            <td>{{item.name}}</td>
+            <td class="price">{{item.price}}</td>
+            <td>
+              <button class="jian">-</button>
+              <span class="count">{{item.count}}</span>
+              <button class="jia">+</button>
+            </td>
+            <td class="money">{{item.count * item.price}}</td>
+            <td>
+              <button class="del">删除</button>
+            </td>
+          </tr>
+          {{/each}}
+        </script>
+        <tbody id="content"></tbody>
+      </table>
+      <h1>总计：<span id="total">0</span> 元</h1>
+    </div>
+  </body>
+  <script>
+    $.get("./data/goods.json", (data) => {
+      data = JSON.parse(data)
+      $("#content").html(template("temp", data));
+    });
+
+    $("#content").on("click", ".del", function () {
+      if (confirm("确定删除吗？")) $(this).parents("tr").remove();
+
+      calc();
+    });
+
+    $("#content").on("click", ".jia", function () {
+      //更新count
+      let countObj = $(this).parents("tr").find(".count");
+      let oldCount = parseInt(countObj.text());
+      oldCount++;
+      countObj.text(oldCount);
+      //计算小计价格
+      let price = parseFloat($(this).parents("tr").find(".price").text());
+      $(this)
+        .parents("tr")
+        .find(".money")
+        .text(oldCount * price);
+
+      calc();
+    });
+
+    $("#content").on("click", ".jian", function () {
+      //更新count
+      let countObj = $(this).parents("tr").find(".count");
+      let oldCount = parseInt(countObj.text());
+      if (oldCount === 1) return;
+      oldCount--;
+      countObj.text(oldCount);
+      //计算小计价格
+      let price = parseFloat($(this).parents("tr").find(".price").text());
+      $(this)
+        .parents("tr")
+        .find(".money")
+        .text(oldCount * price);
+
+      calc();
+    });
+
+    $(".checkAll").change(function () {
+      // property
+      // can not read a property of undefined
+      $('#content input[type="checkbox"]').prop(
+        "checked",
+        $(this).prop("checked")
+      );
+
+      calc();
+    });
+
+    $("#content").on("change", 'input[type="checkbox"]', function () {
+      let isCheckAll =
+        $('#content input[type="checkbox"]:checked').length ===
+        $('#content input[type="checkbox"]').length;
+      $(".checkAll").prop("checked", isCheckAll);
+
+      calc();
+    });
+
+    function calc() {
+      let totalMoney = 0;
+      $('#content input[type="checkbox"]:checked')
+        .parents("tr")
+        .find(".money")
+        .each(function () {
+          let money = parseFloat($(this).text());
+          totalMoney += money;
+        });
+
+      $("#total").text(totalMoney);
+    }
+  </script>
+</html>
