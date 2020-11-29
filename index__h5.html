@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>四川移动上网加速器</title>
+</head>
+<script type="text/javascript" src="./js/jquery-3.5.0.min.js"></script>
+<link rel="stylesheet" href="./index.css">
+
+<body>
+    <div class="tips"></div>
+    <!-- 填写手机号弹窗 popWinStyle为弹框公共样式-->
+    <div class="popWinStyle popwinShadow">
+        <div class="popwin">
+            <div class="popwinWrap">
+                <div class="close"></div>
+                <div class="input-wrap">
+                    <div class="orderTitle">您当前订购的是<span class="orderType">月</span>包:<span
+                            class="orderMoney">14.9</span><span class="orderMoneyUnit">元/月</span></div>
+                    <input class="phoneNumber inputbox inputheight" placeholder="请输入手机号" />
+                    <div class="verify inputheight">
+                        <input class="inputNumber inputbox" placeholder="请输入验证码" />
+                        <button class="getVerify">获取验证码</button>
+                    </div>
+                    <button class="submitBtn">确认订购</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 确认订购弹框样式 -->
+    <div class="popWinStyle orderSuccessPop">
+        <div class="popwin">
+            <div class="popwinWrap">
+                <div class="close"></div>
+                <div class="content-wrap">
+                    <div class="orderTitle">您正在发起确认订购：</div>
+                    <div class="orderContent">上网加速器月包，14.9/月，每月自动续订，订购首月优惠1个月功能费，每个用户仅限办理一次。</div>
+                    <div class="btn-wrap">
+                        <button class="cancelBtn btn">取消</button>
+                        <button class="submitBtn btn">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 订购成功样式 -->
+    <div class="popWinStyle successTipsPop">
+        <div class="popwin">
+            <div class="popwinWrap">
+                <div class="close"></div>
+                <div class="content-wrap">
+                    <div class="orderContent">
+                        上网加速器<span class="orderType">半年</span>包已<span class="blueText">订购成功！</span>
+                    </div>
+                    <div class="tips-step">
+                        请至「掌上营业厅」-「我的」-「常用工具」中找到「上网加速器」，点击“一键加速”畅享加速服务!
+                    </div>
+                    <div class="btn-wrap">
+                        <button class="submitBtn btn">我知道了</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 我知道弹框样式 -->
+    <div class="popWinStyle iknowPop">
+        <div class="popwin">
+            <div class="popwinWrap">
+                <div class="close"></div>
+                <div class="content-wrap">
+                    <div class="orderContent">
+                        此特惠月包每用户仅能办理一次，推荐您办理<span class="blueText">半年包/年包</span>。
+                    </div>
+                    <div class="btn-wrap">
+                        <button class="submitBtn btn">我知道了</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 合约期内弹框样式 -->
+    <div class="popWinStyle inPeriodPop">
+        <div class="popwin">
+            <div class="popwinWrap">
+                <div class="close"></div>
+                <div class="content-wrap">
+                    <div class="orderContent">
+                        您还在合约期内，请放心使用。
+                    </div>
+                    <div class="btn-wrap">
+                        <button class="submitBtn btn">我知道了</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 加载动画 -->
+    <div class="loading">
+        <div class="loadingWrap">
+            <div class="loading-main"></div>
+            <div class="loading-text">加载中...</div>
+        </div>
+    </div>
+    <div class="woAccelerateBg">
+        <img src="images/bg-top.png" width='100%'>
+        <div class="containerWrap">
+            <div class="bg1"></div>
+            <div class="bg2"></div>
+            <div class="bg3"></div>
+            <div class="container">
+                <div class="blockOne">
+                    <div class="blockTitle"><span class="titleImage leftImage"></span><span
+                            class="titleText">限时特惠</span>
+                        <span class="titleImage rightImage"></span></div>
+                    <ul class="orderWrap">
+                        <li class="liWrap">
+                            <div class="first orderImage"></div>
+                            <div class="orderButton togglePopwin" data-type="1">立刻订购</div>
+                        </li>
+                        <li class="liWrap">
+                            <div class="second orderImage"></div>
+                            <div class="orderButton togglePopwin" data-type="2">立刻订购</div>
+                        </li>
+                        <li class="liWrap">
+                            <div class="third orderImage"></div>
+                            <div class="orderButton togglePopwin" data-type="3">立刻订购</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="blockTwo">
+                    <div class="blockTitle"><span class="titleImage leftImage"></span><span
+                            class="titleText">中国移动官方加速器，极速<span style="color: #04a7ff;">免安装</span></span>
+                        <span class="titleImage rightImage"></span></div>
+                    <div class="blockTwoContent">
+                        <ul>
+                            <li><span class="titlecheckImage"></span><span class="blueText">4G专享</span>网络加速通道，获得尊享体验
+                                <div class="jsBorder"></div>
+                            </li>
+                            <li><span class="titlecheckImage"></span>最高<span class="blueText">3倍速率</span>提升，<span
+                                    class="blueText">20%时延</span>降低
+                                <div class="jsBorder"></div>
+                            </li>
+                            <li><span class="titlecheckImage"></span><span
+                                    class="blueText">视频、游戏、在线教育/办公、远程会议</span>等<span
+                                    style="visibility: hidden;">aa</span>网络问题<span class="blueText"
+                                    style="color:#05a9ff;font-style:italic">一键提速</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="blockThree boxPadding">
+                    <div class="blockTitle"><span class="titleImage leftImage"></span><span
+                            class="titleText">使用说明</span>
+                        <span class="titleImage rightImage"></span></div>
+                    <ul class="useInfo">
+                        <li>
+                            <div class="useImage useImageone"></div>
+                            <div class="useInforBorder"></div>
+                            <div class="infoText">
+                                <span class="blueText">用户订购<span class="textWeight">“上网加速器”</span>产品包</span>
+                                <span class="useInfGray">如上：月包、半年包、年包等</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="useImage useImagetwo"></div>
+                            <div class="useInforBorder"></div>
+                            <div class="infoText inforTextTwo">
+                                <span class="blueText">在<span class="textWeight">“四川移动掌上营业厅”</span>打开上网加速器</span>
+                                <span class="useInfGray">掌上营业厅 - 我的 - 常用工具 - 上网加速器</span>
+                                <div class="button">掌上营业厅下载</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="useImage useImagethree"></div>
+                            <div class="useInforBorder"></div>
+                            <div class="infoText">
+                                <span class="blueText">点击<span class="textWeight">“一键加速”</span>享受高速上网</span>
+                            </div>
+                        </li>
+                        <div class="videoBox">
+                            <img class="video" src="images/wo.gif">
+                        </div>
+                    </ul>
+                </div>
+                <div class="blockFour boxPadding">
+                    <div class="blockTitle"><span class="titleImage leftImage"></span><span
+                            class="titleText">用户须知</span>
+                        <span class="titleImage rightImage"></span></div>
+                    <ul class="needKnow">
+                        <li><span
+                                class="needKnowText needKnowImageOne">本产品为四川移动用户在四川省内4G网络下提供加速服务，通常在业务量大、小区较为拥塞时加速效果越明显，提速效果可达2~3倍。</span>
+                        </li>
+                        <li class="needKnowBorder"></li>
+                        <li><span
+                                class="needKnowText needKnowImageTwo">在wifi链接、2G/3G网络环境、数据链接关闭、手机无信号、网络完全拥塞环境下，无法使用加速业务。</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
+
+<script type="text/javascript" src='./js/index.js'></script>
