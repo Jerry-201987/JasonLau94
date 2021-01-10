@@ -1,0 +1,147 @@
+<!-- 
+创建者：陈森杰
+创建时间：2020-08-04
+内容：翻牌器
+-->
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            .std-container {
+                display: flex;
+                justify-content: center;/* 水平居中 */
+                align-items: center;/* 垂直居中 */
+                width: 100vw;
+                height: 100vh;
+            }
+
+            .flop {
+                padding: 0 10px;
+                border: 5px solid #1dbcec;
+                border-radius: 10px;
+                font-size: 0;
+                overflow: hidden;
+            }
+
+            .flop > span {
+                display: inline-block;
+                text-align: right;
+                font-size: 68px;
+                color: #1dbcec;
+            }
+
+            .span-width {
+                width: 50px;
+            }
+
+            .hide {
+                animation: hide linear;
+            }
+
+            .relay {
+                animation: relay linear;
+            }
+
+            @keyframes hide {
+                0% {
+                    transform: translateY(0);
+                    visibility: visible;
+                }
+                50% {
+                    transform: translateY(-80px);
+                    visibility: hidden;
+                }
+                100%{
+                    transform: translateY(80px);
+                    visibility: hidden;
+                }
+            }
+
+            @keyframes relay {
+                0%{
+                    transform: translateY(-80px);
+                    visibility: hidden;
+                }
+                1%{
+                    transform: translateY(80px);
+                    visibility: hidden;
+                }
+                50%{
+                    transform: translateY(0);
+                    visibility: visible;
+                }
+            }
+            
+        </style>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <div class="std-container">
+            <div class="flop">
+            </div>
+        </div>
+
+        <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+        <script>
+            $(document).ready(() => {
+                // let number = '2020-08-02';
+                let number = '12345.67890';
+                let interval = {};
+                function doNumber(data = '0.00') {
+                    data = /[^\d]+/i.test(String(data)) ? String(data) : data + '.00'
+                    data = [...data].map(x => isFinite(x) ? Number(x) : x);
+                    let span_len = [...data].map(x => isFinite(x) ? 0 : x);
+                    let set = new Set(data)
+                    set = Array.from(set).map(x => isFinite(x) ? x : set.delete(x))
+                    let maxNumber = Math.max(...set)
+                    let time = 90;
+
+                    for(let i of span_len){
+                        $('.flop').append(`<span class="${isFinite(data[i]) ? 'span-width' : ''}">${i}</span>`)
+                    }
+                    
+                    for(let j in data){
+                        let doTime = (maxNumber / data[j] + 1) * time;
+
+                        interval['set' + j] = setInterval(() => {
+                            if(!isFinite(data[j]) || data[j] == 0){
+                                clearInterval(interval['set' + j]);
+                                return;
+                            }
+                            span_len[j] ++;
+                            
+                            $('.flop').children('span').eq(j).css({
+                                animationDuration: doTime + 'ms'
+                            }).removeClass('relay').addClass('hide');
+                            setTimeout(() => {
+                                $('.flop').children('span').eq(j).text(span_len[j]).removeClass('hide').addClass('relay');
+                            }, doTime / 2);
+                            if(span_len[j] >= data[j]){
+                                clearInterval(interval['set' + j]);
+                            }
+                        }, doTime);
+                    }
+                }
+
+                doNumber(number)
+            })
+        </script>
+    </body>
+</html>

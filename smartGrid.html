@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="./index.css" />
+    <title>Document</title>
+    <script src="./echarts/js/echarts.min.js"></script>
+    <script src="./echarts/js/jquery1.8.2.min.js"></script>
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      h3,
+      h5 {
+        width: 120px;
+        height: 20px;
+        position: relative;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>广西智慧网格</h3>
+    <div id="main" style="width: 800px; height: 800px"></div>
+    <table>
+      <thead>
+        <tr>
+          <th><div class="cell">序号</div></th>
+          <th><div class="cell">城市</div></th>
+          <th><div class="cell">百分比</div></th>
+        </tr>
+      </thead>
+      <tbody id="subject"></tbody>
+    </table>
+    <script type="text/javascript">
+      // 基于准备好的dom，初始化echarts
+      var str = "";
+      var myChart = echarts.init(document.getElementById("main"));
+      option = {
+        // title: { text: "资产分类统计<br>设备总数：29", x: "center" },
+        title: {
+          text: "管廊监测设备",
+          x: "center",
+          y: "58%",
+          textStyle: {
+            fontWeight: "400",
+            fontSize: 17,
+            color: "#fff",
+          },
+        },
+        // tooltip: {
+        //   //提示框，可以在全局也可以在
+        //   trigger: "item", //提示框的样式
+        //   formatter: "{a} <br/>{b}: {c} ({d}%)", //a 系列名称，b 数据项名称，c 数值，d 百分比
+        //   color: "#000", //提示框的背景色
+        //   textStyle: {
+        //     //提示的字体样式
+        //     color: "black",
+        //     fontSize: 14,
+        //   },
+        // },
+        legend: {
+          //图例
+          orient: "vertical", //图例的布局， vertical 竖直    horizontal 为水平
+          y: "bottom", //图例显示在右边
+          data: ["≥90%", "≥60%&＜90%", "≤60%"],
+          textStyle: {
+            //图例文字的样式
+            color: "#ccc", //文字颜色
+            fontSize: 12, //文字大小
+          },
+        },
+        series: [
+          /* 内环，不需要，注释掉 */
+          // {
+          //   name: "缉魂20210110",
+          //   type: "pie",
+          //   radius: ["30%", "30%"],
+          //   // center: ["50%", "50%"],
+          //   color: ["#C23531"],
+          //   // minAngle: 20, //文字间距
+          //   label: {
+          //     normal: { show: true, position: "inner" },
+          //     emphasis: {
+          //       show: true,
+          //       textStyle: {
+          //         fontSize: "20",
+          //         fontWeight: "700",
+          //       },
+          //     },
+          //   },
+          //   data: [{ value: 0, name: "" }],
+          // },
+          {
+            name: "访问来源",
+            type: "pie", //环形图的type和饼图相同
+            radius: ["50%", "70%"], //饼图的半径，第一个为内半径，第二个为外半径
+            avoidLabelOverlap: false,
+            color: ["#973ae9", "#0084e9", "#1ce3c8"],
+            itemStyle: {
+              normal: {
+                borderWidth: 12,
+                borderColor: "#fff",
+              },
+            },
+            label: {
+              normal: { show: false, position: "right" },
+              emphasis: {
+                //选中时候的样式
+                show: false,
+                // shadowBlur: 10,
+                // shadowOffsetX: 0,
+                // shadowColor: "rgba(0,0,0,0.5)",
+                // textStyle: {
+                //   fontSize: "20",
+                //   fontWeight: "bold",
+                // },
+              },
+            }, //提示文字
+            labelLine: {
+              normal: {
+                show: false, //隐藏指向斜杠
+              },
+            },
+            data: [
+              { value: 4, name: ">=90%" },
+              { value: 3, name: ">=60% & <90%" },
+              { value: 2, name: "<60%" },
+            ],
+          },
+        ],
+      };
+      myChart.setOption(option);
+      //点击事件
+      let data = [
+        {
+          id: 1,
+          name: "南宁",
+          num: "11%",
+        },
+        {
+          id: 2,
+          name: "桂林",
+          num: "61%",
+        },
+        {
+          id: 3,
+          name: "柳州",
+          num: "23%",
+        },
+        {
+          id: 4,
+          name: "钦州",
+          num: "69%",
+        },
+        {
+          id: 5,
+          name: "北海",
+          num: "91%",
+        },
+        {
+          id: 6,
+          name: "防城港",
+          num: "58%",
+        },
+        {
+          id: 7,
+          name: "百色",
+          num: "93%",
+        },
+      ];
+      let aAr = data.filter((r) => r.num >= "90%");
+      let bAr = data.filter((r) => r.num >= "60%" && r.num < "90%");
+      let cAr = data.filter((r) => r.num < "60%");
+      myChart.on("click", function (param) {
+        let precentName = param.data.name;
+        // console.log(precentName, "孙安可");
+        if (precentName === ">=90%") {
+          // console.log(data.filter((r) => r.num >= "90%"));
+          for (let i = 0; i < aAr.length; i++) {
+            str +=
+              '<tr><td class="is-leaf"><div class="cell"><input type="text" readonly class="uname" value="' +
+              aAr[i].id +
+              '"/></div></td>' +
+              '<td class="is-leaf"><div class="cell"><input type="text" value="' +
+              aAr[i].name +
+              '" class="pwd_txt" /><div class="errMsg">123</div></div></td>' +
+              '<td class="is-leaf"><div class="cell"><input type="text" value="' +
+              aAr[i].num +
+              '" class="surePwd_txt" /><div class="errSureMsg"></div></div></td></tr>';
+          }
+          $("#subject").append(str);
+        } else if (precentName === ">=60% & <90%") {
+          // console.log(data.filter((r) => r.num >= "60%" && r.num < "90%"));
+        } else if (precentName === "<60%") {
+          // console.log(data.filter((r) => r.num < "60%"));
+        }
+      });
+    </script>
+  </body>
+</html>
