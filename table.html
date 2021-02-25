@@ -85,3 +85,129 @@
     });
   </script>
 </html>
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+<style>
+      * {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      a:link,
+      a:visited {
+        color: #fff;
+        text-decoration: none;
+      }
+      .container {
+        width: 300px;
+        margin: 100px auto;
+        border: 1px solid red;
+      }
+      .box {
+        width: 100%;
+        height: 400px;
+        display: flex;
+      }
+      .box > li {
+        float: left;
+        margin-right: 2px;
+      }
+      .box a {
+        display: block;
+        width: 200px;
+        height: 40px;
+        border: 1px solid #4f4f4f;
+        background: #545c64;
+        font-size: 14px;
+        line-height: 40px;
+        text-align: center;
+      }
+      .box a:hover {
+        color: #ffd04b;
+      }
+      .box2 {
+        display: none;
+      }
+      .box2 > li {
+        position: relative;
+      }
+      .box2 > li > a {
+        background: #ccc;
+      }
+      .box > li:hover .box2 {
+        display: block;
+      }
+      .box3 {
+        display: none;
+        position: absolute;
+        left: 201px;
+        top: 0;
+      }
+      .box2 > li:hover .box3 {
+        display: block;
+      }
+      .box3 a {
+        background: burlywood;
+      }
+      .act {
+        color: #ffd04b;
+      }
+      .content li {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <ul class="box">
+        <li class="li">
+          <a href="#">宽带质量分析1</a>
+          <ul class="box2">
+            <li>
+              <a href="#">分光链路信息配置1</a>
+              <ul class="box3">
+                <li><a href="#">地市采集信息配置1</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li class="li">
+          <a href="#">电视质量分析2</a>
+          <ul class="box2">
+            <li>
+              <a href="#">分光链路信息配置2</a>
+              <ul class="box3">
+                <li><a href="#">地市采集信息配置2</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li class="li">
+          <a href="#">VR质量分析3</a>
+          <ul class="box2">
+            <li>
+              <a href="#">分光链路信息配置3</a>
+              <ul class="box3">
+                <li><a href="#">BRAS轮询记录查询3</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="content">
+        <li style="display: block">火55车票</li>
+        <li>火44车票111</li>
+        <li>火66车票222</li>
+      </ul>
+    </div>
+    <script>
+      $(".box3 a").on("click", function () {
+        $(this).parents("li").children("a").css("color", "#ffd04b");
+        $(this).parents("li").siblings().children("a").css("color", "#fff");
+
+        let index = $(this).parents(".li").index();
+        $(".content li").eq(index).show().siblings().hide();
+        // $(this).parents('li').children('a').addClass('act')
+        // $(this).parents('li').siblings('li').children('a').removeClass('act')
+      });
+    </script>
+  </body>
