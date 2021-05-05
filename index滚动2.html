@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      ul,
+      li,
+      em {
+        margin: 0;
+        padding: 0;
+      }
+      .cont {
+        height: 280px;
+        /* max-height: 600px; */
+        line-height: 40px;
+        /* background-color: #000;
+        color: #fff; */
+        overflow: hidden;
+        position: relative;
+      }
+      .contlist {
+        position: absolute;
+        white-space: nowrap;
+        border: 1px solid green;
+        /* display: flex; */
+        /* flex-direction: row; */
+      }
+      .contlist ul {
+        /* display: flex; */
+        /* flex-direction: row; */
+      }
+      .contlist ul li {
+        font-size: 12px;
+        margin-right: 25px;
+        height: 40px; /* 求offsetHeight的值 */
+        line-height: 40px;
+        /* display: flex; */
+        /* flex-direction: row; */
+      }
+      .contlist ul li em {
+        color: #f80;
+        font-size: 12px;
+        padding-right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="cont">
+        <div
+          class="contlist"
+          ref="contlist"
+          @mouseover="stopFn"
+          @mouseout="startFn"
+        >
+          <ul>
+            <li v-for="(item, index) in listData" :key="index">
+              {{ item.name }} {{ item.time }}
+            </li>
+          </ul>
+          <ul>
+            <li v-for="(item, index) in listData" :key="index">
+              {{ item.name }} {{ item.time }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      new Vue({
+        el: "#app",
+        data() {
+          return {
+            listData: [
+              {
+                name: "全运会女子三人篮球成年组资格赛本周开赛",
+                time: "2019-12-18 16:20:34",
+              },
+              {
+                name: "河南建业更名为 “河南嵩山龙门”",
+                time: "2019-12-18 16:20:34",
+              },
+              {
+                name: "河南队勇夺全国女篮 联赛三人制比赛 亚军",
+                time: "2019-12-18 16:20:34",
+              },
+              {
+                name: "省足协俱乐部杯锦标赛圆满落幕",
+                time: "2019-12-18 16:20:34",
+              },
+              {
+                name: "备战全运会建业女足迎来新教练",
+                time: "2019-12-18 16:20:34",
+              },
+              {
+                name:
+                  "2020年河南省体育传统项目学校国家级体育俱乐部中学生篮球锦标赛开幕式在河南",
+                time: "2019-12-18 16:20:34",
+              },
+              {
+                name: "全国男排超级联赛 河南男排获得第八",
+                time: "2019-12-18 16:20:34",
+              },
+            ],
+            timer: "",
+          };
+        },
+        created() {
+          this.startFn();
+        },
+        methods: {
+          //鼠标悬停，停止滚动
+          stopFn() {
+            clearInterval(this.timer);
+          },
+          //鼠标移开 ，接着滚动
+          startFn() {
+            this.timer = setInterval(this.scroll, 100);
+          },
+        //循环滚动1
+        //   scroll(outBox, inBox) {
+        //     if (outBox.scrollTop < inBox.offsetHeight) {
+        //       outBox.scrollTop++;
+        //       console.log(outBox.scrollTop);
+        //     } else {
+        //       outBox.scrollTop = 0;
+        //     }
+        //   },
+          //   循环滚动2
+          scroll() {
+            setTimeout(() => {
+              this.listData.push(this.listData[0]);
+              this.listData.shift();
+            }, 500);
+          },
+        },
+        // created() {
+        //   //实例挂载完毕前
+        //   //调用滚动代码
+        //   let outBox = document.getElementsByClassName("contlist");
+        // //   outBox.scrollTop = 20;
+        //   let inBox = document.getElementsByTagName("ul")[0];
+        //     let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+        //   //   console.log(scrollTop,'ljy123')
+        //   console.log(inBox.offsetHeight);
+        //   console.log(outBox.scrollTop);
+        // //   clearInterval(this.timer);
+        //   window.addEventListener("scroll", this.scroll);
+        // },
+        // beforeDestroy() {
+        //   window.removeEventListener("scroll", this.scroll);
+        // },
+      });
+    </script>
+  </body>
+</html>
