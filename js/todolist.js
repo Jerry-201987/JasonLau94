@@ -123,3 +123,108 @@ $(function() {
     }
 
 });
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    <link rel="stylesheet" href="./css/handsontable.full.css" />
+    <script src="./js/handsontable.full.js"></script>
+    <script src="./js/jquery.min.js"></script>
+    <style>
+      .container {
+        position: relative;
+      }
+      #example {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .page {
+        position: absolute;
+        margin-top: 520px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      i {
+        font-style: normal;
+        cursor: pointer;
+        border: 1px solid #ccc;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="example"></div>
+      <!-- <div style="text-align: center;"> -->
+      <div class="page">
+        <i id="prev">◀</i>
+        &nbsp;&nbsp;第<input type="text" style="width: 30px;">页&nbsp;&nbsp;
+        <i id="next">▶</i>
+      </div>
+    </div>
+
+  </body>
+  <script>
+    var dta = [
+      //四行五列
+      ["2008", 'Beijing', 11, 12, 13],
+      ["2009", 20, 11, 14, 13],
+      ["2010", 'Shanghai', 15, 12, 13],
+      ["2011", 'Wenzhou', 15, 12, 13],
+      ["2012", 'Wenzhou', 15, 12, 13],
+      ["2013", "Wenzhou", "Nissan", "Toyota", "Honda"],
+      ["2014", 'Beijing', 11, 12, 13],
+      ["2015", 20, 11, 14, 13],
+      ["2016", 'Shanghai', 15, 12, 13],
+      ["2017", 'Wenzhou', 15, 12, 13],
+      ["2018", 'Wenzhou', 15, 12, 13],
+      ["2019", "Wenzhou", "Nissan", "Toyota", "Honda"],
+      ["2020", 'Beijing', 11, 12, 13],
+      ["2021", 20, 11, 14, 13],
+      ["2022", 'Shanghai', 15, 12, 13],
+      ["2023", 'Wenzhou', 15, 12, 13],
+    ];
+
+    let ep = document.getElementById('example')
+
+    let hot = new Handsontable(ep, {
+      data: dta,
+      // rowHeaders: true, 
+      // colHeaders: true,
+      // contextMenu: true, //显示表头下拉菜单
+      // minSpareRows: 1,
+      // minSpareCols: 2,
+      // minSpareCols: columnHeaders.length,
+      licenseKey: "non-commercial-and-evaluation",  // 非商业用途声明
+      colHeaders: ['日期', '地点'],//设置列头显示-集合，格式：['日期', '地点', '商品', '单价']
+      wordWrap: true,
+      manualColumnFreeze: true,
+      manualColumnResize: true,
+      manualRowResize: true,
+    })
+
+    function paginate(data, pageSize, curPage) {
+      let startIndex = (curPage - 1) * pageSize;
+      let endIndex = startIndex + pageSize;
+      return data.slice(startIndex, endIndex);
+    }
+
+    // const data = [...] // 原始数据
+    let pageSize = 15 // 15 20 50
+    let curPage = 1
+    $('input').val(curPage)
+    function updateTable() {
+      const paginatedData = paginate(dta, pageSize, curPage)
+      hot.loadData(paginatedData)
+    }
+    updateTable() // 初始化表格
+    // 翻页操作
+    $('#prev').on('click', function() {
+      curPage--
+      $('input').val(curPage)
+      updateTable()
+    })  
+    
+    $('#next').on('click', function() {
+      curPage++
+      $('input').val(curPage)
+      updateTable()
+    })  
