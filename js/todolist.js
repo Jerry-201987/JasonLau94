@@ -124,28 +124,35 @@ $(function() {
 
 });
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>handsontable案例</title>
     <link rel="stylesheet" href="./css/handsontable.full.css" />
     <script src="./js/handsontable.full.js"></script>
     <script src="./js/jquery.min.js"></script>
     <style>
       .container {
-        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
       #example {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
       }
       .page {
-        position: absolute;
-        margin-top: 520px;
-        left: 50%;
-        transform: translateX(-50%);
+        margin-top: 40px;
       }
       i {
         font-style: normal;
         cursor: pointer;
-        border: 1px solid #ccc;
+        /* border: 1px solid #ccc; */
+      }
+      .ban {
+        cursor: not-allowed; 
+        background-color: #ccc;
       }
     </style>
   </head>
@@ -155,46 +162,29 @@ $(function() {
       <div id="example"></div>
       <!-- <div style="text-align: center;"> -->
       <div class="page">
+        共<b style="font-weight: 400;"></b>页
+        <select name="" id="select">
+          <option value="15">15条/页</option>
+          <option value="20">20条/页</option>
+          <option value="50">50条/页</option>
+          <option value="60">60条/页</option>
+        </select>
         <i id="prev">◀</i>
-        &nbsp;&nbsp;第<input type="text" style="width: 30px;">页&nbsp;&nbsp;
+        &nbsp;&nbsp;第<input type="text" style="width: 30px;" id="ipt">页&nbsp;&nbsp;
         <i id="next">▶</i>
       </div>
     </div>
 
   </body>
   <script>
-    var dta = [
-      //四行五列
-      ["2008", 'Beijing', 11, 12, 13],
-      ["2009", 20, 11, 14, 13],
-      ["2010", 'Shanghai', 15, 12, 13],
-      ["2011", 'Wenzhou', 15, 12, 13],
-      ["2012", 'Wenzhou', 15, 12, 13],
-      ["2013", "Wenzhou", "Nissan", "Toyota", "Honda"],
-      ["2014", 'Beijing', 11, 12, 13],
-      ["2015", 20, 11, 14, 13],
-      ["2016", 'Shanghai', 15, 12, 13],
-      ["2017", 'Wenzhou', 15, 12, 13],
-      ["2018", 'Wenzhou', 15, 12, 13],
-      ["2019", "Wenzhou", "Nissan", "Toyota", "Honda"],
-      ["2020", 'Beijing', 11, 12, 13],
-      ["2021", 20, 11, 14, 13],
-      ["2022", 'Shanghai', 15, 12, 13],
-      ["2023", 'Wenzhou', 15, 12, 13],
-    ];
-
+    let xxxxx = "{\"total\":32,\"rows\":[{\"id\":37,\"brief_description\":\"简要描述123\",\"description\":\"问题描述123\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-22 11:18:42\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":36,\"brief_description\":\"简要描述123\",\"description\":\"问题描述123\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-22 11:04:41\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":35,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-22 11:00:07\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":34,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-20 15:40:18\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":33,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-20 15:33:55\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":32,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-20 15:30:54\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":31,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-20 15:30:00\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":30,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-20 15:29:24\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":29,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-20 15:28:05\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":28,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-20 15:27:12\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":27,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-20 15:14:23\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":26,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-20 15:09:31\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":25,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-20 15:04:49\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":24,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-20 15:04:40\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":23,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-20 15:04:16\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":22,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-20 15:03:19\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":21,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-20 14:59:35\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":20,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-20 14:59:10\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":19,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-20 14:57:43\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":18,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-20 14:56:42\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":17,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-20 14:54:53\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":16,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-20 14:54:53\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":15,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-20 14:54:07\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":14,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-20 14:54:07\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":13,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-19 16:31:40\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":12,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-19 16:31:39\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":11,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-19 16:31:38\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":10,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-19 16:31:38\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":9,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-19 16:31:38\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":8,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-19 16:31:37\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":7,\"brief_description\":\"简要描述6\",\"description\":\"问题描述6\",\"executor_id\":1,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-19 16:31:36\",\"status\":null,\"executor_name\":\"测试执行器0\",\"project_name\":\"测试项目\",\"total\":32},{\"id\":3,\"brief_description\":\"修改简要描述\",\"description\":\"修改问题描述\",\"executor_id\":2,\"owner\":\"董坤\",\"employee_id\":\"dwx1160680\",\"propose_time\":\"2023-09-19 16:16:20\",\"status\":null,\"executor_name\":\"测试执行器1\",\"project_name\":null,\"total\":32}]}"
+    let dta = $.parseJSON(xxxxx).rows
     let ep = document.getElementById('example')
-
     let hot = new Handsontable(ep, {
       data: dta,
-      // rowHeaders: true, 
-      // colHeaders: true,
-      // contextMenu: true, //显示表头下拉菜单
-      // minSpareRows: 1,
-      // minSpareCols: 2,
-      // minSpareCols: columnHeaders.length,
       licenseKey: "non-commercial-and-evaluation",  // 非商业用途声明
-      colHeaders: ['日期', '地点'],//设置列头显示-集合，格式：['日期', '地点', '商品', '单价']
+      colHeaders: ['id', '简要描述', '问题描述', '执行器id', '提出人', '提出人工号', '提出时间', '状态', '执行器名称', '项目名称', 'total'],
+      colWidths: [50, 200, 200, 100, 200, 200, 200, 50, 200, 200],
       wordWrap: true,
       manualColumnFreeze: true,
       manualColumnResize: true,
@@ -207,24 +197,99 @@ $(function() {
       return data.slice(startIndex, endIndex);
     }
 
-    // const data = [...] // 原始数据
+    // const data = [...] // 初始数据
     let pageSize = 15 // 15 20 50
     let curPage = 1
+    let maxPage = Math.ceil(dta?.length / pageSize)
+    console.log(maxPage, 'maxPage0');
+
     $('input').val(curPage)
-    function updateTable() {
+
+    function updateTable () {
       const paginatedData = paginate(dta, pageSize, curPage)
       hot.loadData(paginatedData)
+      $('b').text(maxPage)
     }
-    updateTable() // 初始化表格
+
     // 翻页操作
-    $('#prev').on('click', function() {
-      curPage--
+      $('#prev').on('click', function() {
+        curPage--
+        if (dta?.length > pageSize) {
+          $('#next').removeClass('ban')
+          if (curPage <= 1) {
+            curPage = 1
+            $('#prev').addClass('ban')
+          }
+          $('input').val(curPage)
+          updateTable()
+        } else {
+          $('#next').addClass('ban')
+        }
+      })
+  
+      $('#next').on('click', function() {
+        curPage++
+        if (dta?.length > pageSize) {
+          $('#prev').removeClass('ban')
+          if (curPage >= maxPage) {
+            console.log(maxPage, 'maxPage1');
+            curPage = maxPage
+            $('#next').addClass('ban')
+          }
+          $('input').val(curPage)
+          updateTable()
+        } else {
+          $('#next').addClass('ban')
+        }
+      })
+
+    $('#select').on('change', () => {
+      let val = parseInt($('#select option:selected').val())
+      pageSize = val
+      curPage = 1
+      maxPage = Math.ceil(dta?.length / pageSize)
+      console.log(maxPage, 'maxPage2');
+      $('#prev').addClass('ban')
+      nextStyle()
       $('input').val(curPage)
       updateTable()
-    })  
-    
-    $('#next').on('click', function() {
-      curPage++
-      $('input').val(curPage)
-      updateTable()
-    })  
+    })
+
+    function nextStyle () {
+      if (dta?.length <= pageSize) {
+        $('#next').addClass('ban')
+      } else {
+        $('#next').removeClass('ban')
+      }
+    }
+
+    $('#ipt').on('keypress', function (e) { // keydown input blur
+      iptVal = $('#ipt').val() // iptVal类型为string
+      // if (!/^\d+$/.test(iptVal)) {
+      if (e.keyCode >= 48 && e.keyCode <= 57) {
+          return true
+      } else if (e.keyCode === 13) {
+        if (Number(iptVal) <= maxPage) {
+          curPage = Number(iptVal)
+          updateTable()
+        } else {
+          alert('数字大于总页数')
+          curPage = 1
+          $('input').val(curPage)
+          updateTable()
+          nextStyle()
+          $('#prev').addClass('ban')
+        }
+      } else {
+        alert('请输入数字')
+        return false
+      }
+    })
+
+    // 初始化
+    $(function () {
+      updateTable() // 初始化表格
+      $('#prev').addClass('ban')
+    })
+  </script>
+</html>
