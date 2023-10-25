@@ -266,3 +266,185 @@ $(function() {
     </script>
   </body>
 </html>
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="css/handsontable.full.css" />
+    <script src="js/handsontable.full.js"></script>
+    <script src="js/jquery.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <form action="" >
+        <div class="form-group" id="modal">
+          <div class="col-sm-2">
+            <label class="control-label" for="brief_description"
+              >简要描述*</label
+            >
+          </div>
+          <div class="col-sm-10">
+            <textarea
+              class="form-control text-area-control"
+              id="brief_description"
+              rows="2"
+              placeholder="一句话简要描述"
+            ></textarea>
+          </div>
+        </div>
+      </form>
+    </div>
+    <script>
+      // let str = ''
+      let sum = 0;
+      let colParam = [
+        {
+          column_header: "brief_description",
+          column_description: "简要描述",
+          column_width: "235",
+          column_type: "text",
+          select_count: "",
+          mandatory_or_not: 1,
+          show_or_not: 1,
+        },
+        {
+          column_header: "description",
+          column_description: "描述",
+          column_width: "50",
+          column_type: "text",
+          select_count: "",
+          mandatory_or_not: 1,
+          show_or_not: 1,
+        },
+        {
+          column_header: "owner",
+          column_description: "创建人",
+          column_width: "50",
+          column_type: "text",
+          select_count: "",
+          mandatory_or_not: 1,
+          show_or_not: 1,
+        },
+        {
+          column_header: "employee_id",
+          column_description: "工号",
+          column_width: "50",
+          column_type: "text",
+          select_count: "",
+          mandatory_or_not: 1,
+          show_or_not: 1,
+        },
+        {
+          column_header: "propose_time",
+          column_description: "创建时间",
+          column_width: "50",
+          column_type: "text",
+          select_count: "",
+          mandatory_or_not: 1,
+          show_or_not: 1,
+        },
+        {
+          column_header: "executor_id",
+          column_description: "执行器id",
+          column_width: "50",
+          column_type: "text",
+          select_count: "",
+          mandatory_or_not: 1,
+          show_or_not: 0,
+        },
+        {
+          column_header: "project_id",
+          column_description: "项目id",
+          column_width: "50",
+          column_type: "text",
+          select_count: "",
+          mandatory_or_not: 1,
+          show_or_not: 0,
+        },
+        {
+          column_header: "project_name",
+          column_description: "项目名称",
+          column_width: "235",
+          column_type: "text",
+          select_count: "",
+          mandatory_or_not: 1,
+          show_or_not: 1,
+        },
+        {
+          column_header: "executor_name",
+          column_description: "执行器名称",
+          column_width: "235",
+          column_type: "text",
+          select_count: "",
+          mandatory_or_not: 1,
+          show_or_not: 1,
+        },
+        {
+          column_header: "test",
+          column_description: "测试字段",
+          column_width: "235",
+          column_type: "text",
+          select_count: null,
+          mandatory_or_not: 1,
+          show_or_not: 0,
+        },
+        {
+          column_header: "test3",
+          column_description: "测试字段3",
+          column_width: "235",
+          column_type: "select",
+          select_count: null,
+          mandatory_or_not: 1,
+          show_or_not: 0,
+        },
+      ];
+      let textStr
+      let selStr
+      console.log(colParam, colParam?.length, "++++++++++++++++++++++");
+      for (let i = 7; i < colParam?.length; i++) {
+          if (colParam[i]?.column_type === "text") {
+              if (colParam[i]?.show_or_not) {
+                  sum += i * 10
+                  textStr = `
+                      <div class="col-sm-2">
+                          <label class="control-label" for=${colParam[i]?.column_header}>${colParam[i]?.column_description}*</label>
+                      </div>
+                      <div class="col-sm-10">
+                          <textarea class="form-control text-area-control" id=${colParam[i]?.column_header} rows="2"
+                                  placeholder="请输入${colParam[i]?.column_description}"></textarea>
+                      </div>
+                  `
+                  $('#modal').append(textStr)
+              }
+            //   $('#modal').append(textStr)
+          } else if (colParam[i]?.column_type === "select") {
+              if (colParam[i]?.show_or_not) {
+                  sum += i * 100
+                  selStr = `
+                      <div class="col-sm-2">
+                          <label class="control-label" for=${colParam[i]?.column_header}>${colParam[i]?.column_description}*</label>
+                      </div>
+                      <div class="col-sm-10">
+                          <select class="form-control" id=${colParam[i]?.column_header}>
+                              <option></option>
+                          </select>
+                      </div>
+                  `
+                  $('#modal').append(selStr)
+              }
+            //   $('#modal').append(selStr)
+          }
+          console.log(sum);
+      }
+
+    //   $('#modal').append(textStr)
+    //   $('#modal').append(selStr)
+
+      console.log(sum);
+    </script>
+  </body>
+</html>
