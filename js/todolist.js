@@ -448,3 +448,59 @@ $(function() {
     </script>
   </body>
 </html>
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+import json
+import os
+from threading import Thread
+
+project_path = os.path.split(os.path.realpath(__file__))[0] + '/..'
+
+
+def load_json(file_name):
+    """
+    加载json文件
+    :file_name : 文件名
+    """
+    with open(os.path.join(project_path, 'config', file_name), 'r', encoding='UTF-8') as result:
+        return json.load(result)
+
+
+def async_call(f):
+    def wrapper(*args, **kwargs):
+        thr = Thread(target=f, args=args, kwargs=kwargs)
+        thr.start()
+
+    return wrapper
+
+def write_to_config_json(content_name,data):
+    with open(os.path.join(get_project_rootpath(),'config',content_name,'goniometer','axis_config.json'), "w", encoding="utf-8") as fd:
+        # indent=2 格式化json文件, ensure_ascii=False中文识别
+        json.dump(data, fd, indent=2, ensure_ascii=False)
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# 无放回抽样
+# list_unique = random.sample([_ for _ in range(10)], 10)
+# 有放回抽样
+# list_repeatable = random.choices([_ for _ in range(10)], k=10)
+list_repeatable2 = random.choice([str(_) for _ in range(10)])
+print(list_repeatable2, type(list_repeatable2))
+
+
+self.list_repeatable2 = [str(_) for _ in range(10)]
+self.label.setText(random.choice(self.list_repeatable2))
+
+# for i in range(len(lst)):
+#     print(i, lst[i])
+
+# for i, n in enumerate(lst):
+#     print(i, n)
+
+# for i, n in enumerate(lst, 1):
+#     print(i, n)
+
+# 序列解压
+num_tup = (1, 2)
+try:
+    x, y, z, zz = num_tup
+
+except Exception as ex:
+    print(f'出错了，出错原因：{ex}')
