@@ -1,3 +1,52 @@
+all_lst = []
+
+para_name = ['Calibration time']
+nm_name = ["12.5nm", "12.52nm", "14.46nm", "14.48nm", "14.5nm"]
+para_name += nm_name
+# print(para_name)
+
+# 我需要10行5列    
+# [[1,2],[3,4],[5,6]] 3*2
+
+def time_factory(start_time=(2023, 1, 1, 0, 0, 0, 0, 0, 0), end_time=(2023, 11, 8, 23, 59, 59, 0, 0, 0)):
+    start = time.mktime(start_time)  # 生成开始时间戳
+    end = time.mktime(end_time)  # 生成结束时间戳
+    # print(start, 'start')
+    # print(end, 'end')
+    t = random.randint(start, end)  # 在开始和结束时间戳中随机取出一个
+    # print(t, 't')
+    date_touple = time.localtime(t)  # 将时间戳生成时间元组
+    # print(date_touple, type(date_touple))
+    date = time.strftime("%Y-%m-%d %H:%M:%S", date_touple)  # 将时间元组转成格式化字符串
+    # print(date, type(date))
+    return date
+    # print(date)
+
+def get_table_data(rag=10):
+    time_lst = []
+    for i in range(rag):
+        time_lst.append(time_factory())
+    # print(time_lst)
+
+    for i in range(len(nm_name)):
+        line_lst = []
+        for j in range(rag):
+            # line_lst.append(f'lst{j + 1}')
+            line_lst.append(round(random.uniform(10, 18), 2))
+            # print(line_lst, 'xxxx')
+        all_lst.append(line_lst)
+
+    all_lst.insert(0, time_lst)
+
+    return all_lst
+
+print(get_table_data())
+
+for i in range(len(all_lst[0])):  #行循环
+    for j in range(len(all_lst)):  #列循环
+        table_item = str(all_lst[j][i])
+        print(table_item)
+***************************************************************************************************
 // 案例介绍：
 // 1. 文本框里面输入内容，按下回车，就可以生成待办事项。
 // 2. 点击待办事项复选框，就可以把当前数据添加到已完成事项里面。
