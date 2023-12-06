@@ -1,3 +1,339 @@
+import os
+import random
+import time
+import openpyxl
+import pyqtgraph as pg
+from functools import partial
+
+from PySide2.QtCore import QTimer, QEvent, QObject
+from PySide2.QtCore import Qt
+from PySide2 import QtGui
+from PySide2.QtWidgets import QGraphicsDropShadowEffect, QTableWidget, QHeaderView, QMessageBox, QFileDialog
+from PySide2.QtWidgets import QPushButton, QLineEdit, QLabel
+from PySide2.QtWidgets import QWidget, QTableWidgetItem
+from PySide2.QtGui import QColor
+
+from script.turnable_angle.detector_normalization.ui.detector_normalization_ui import Ui_Form
+from testbot.adt_base.adt_presenter import ADTPresenter
+from testbot.base.result_show import GraphicResultWindow
+
+
+class DetectorNormalizationPresenter(QWidget, Ui_Form, ADTPresenter):
+    def __init__(self, name):
+        """
+        初始化
+        """
+        super(DetectorNormalizationPresenter, self).__init__()
+        ADTPresenter.__init__(self, first_dir="cpd", second_dir="detector_normalization", file_name=name)
+        self.setupUi(self)
+        # 按钮绑定
+        self.button_init()
+        # 输入框范围限定
+        self.adt_input_range_init()
+        self.pulse_validator()
+        # 输入框范围
+        self._input_range = {
+            "start": {
+                "left": -3,
+                "right": 3
+            },
+            "end": {
+                "left": -4,
+                "right": 4
+            },
+            "step": {
+                "left": -5,
+                "right": 5
+            },
+            "pulse": {
+                "left": 0,
+                "right": 9999999
+            }
+        }
+        # 准备状态
+        self._prepare_status = False
+        # 表格数据
+        self.all_lst = []
+        # 固定表头
+        self.para_name = ['Calibration time']
+        # 动态表头 接口假数据
+        self.nm_name = ["12.5nm", "12.52nm", "14.46nm", "14.48nm", "14.5nm"]
+        self.get_table_data()
+        self.set_name()
+
+        self.Date_PD1 = list()
+        self.Date_PD2 = list()
+        self.Date_PD3 = list()
+        self.Date_PD4 = list()
+        self.Date_PD5 = list()
+        # 数据加载
+        self.test_data()
+        # 画布
+        self.gridLayout_list = {self.line_chart: {'x_label': "Num. (a.u.)",
+                                                  'y_label': "Intensity (a.u.)",
+                                                  'curve_name1': "12.5nm",
+                                                  'curve_name2': "12.52nm",
+                                                  'curve_name3': "14.46nm",
+                                                  'curve_name4': "14.48nm",
+                                                  'curve_name5': "14.5nm"}}
+        # 图表加载
+        # self.show_chart()
+        self.draw_line()
+
+    def test_data(self):
+        self.Date_PD1 = self.all_lst[1]
+        self.Date_PD2 = self.all_lst[2]
+        self.Date_PD3 = self.all_lst[3]
+        self.Date_PD4 = self.all_lst[4]
+        self.Date_PD5 = self.all_lst[5]
+
+    # 图表展示
+    def show_chart(self):
+        for key, value in self.gridLayout_list.items():
+            self.set_graphic_line_widget_fig(gridLayout_name=key, x_label=value.get('x_label'), y_label=value.get('y_label'), 
+                                             data_1=self.Date_PD1, data_2=self.Date_PD2, data_3=self.Date_PD3, data_4=self.Date_PD4, 
+                                             data_5=self.Date_PD5, curve_name1=value.get('curve_name1'), curve_name2=value.get('curve_name2'), 
+                                             curve_name3=value.get('curve_name3'), curve_name4=value.get('curve_name4'), curve_name5=value.get('curve_name5'))
+
+    # 随机颜色
+    @staticmethod
+    def get_color():
+        r = random.randint(0, 255)
+        g = random.randint(0, 255)
+        b = random.randint(0, 255)
+        return QColor(r, g, b)
+
+    def draw_line(self):
+        self.line_chart.setLabel('left', 'Intensity (a.u.)')
+        self.line_chart.setLabel('bottom', 'Num. (a.u.)')
+        self.line_chart.setBackground('w')
+        curve1 = self.line_chart.plot(pen=pg.mkPen({'color': self.get_color(), 'width': 2}),
+                                                    x=list(range(len(self.Date_PD1))), y=self.Date_PD1)
+        curve2 = self.line_chart.plot(pen=pg.mkPen({'color': self.get_color(), 'width': 2}),
+                                                    x=list(range(len(self.Date_PD2))), y=self.Date_PD2)
+        curve3 = self.line_chart.plot(pen=pg.mkPen({'color': self.get_color(), 'width': 2}),
+                                                    x=list(range(len(self.Date_PD3))), y=self.Date_PD3)
+        curve4 = self.line_chart.plot(pen=pg.mkPen({'color': self.get_color(), 'width': 2}),
+                                                    x=list(range(len(self.Date_PD4))), y=self.Date_PD4)
+        curve5 = self.line_chart.plot(pen=pg.mkPen({'color': self.get_color(), 'width': 2}),
+                                                    x=list(range(len(self.Date_PD5))), y=self.Date_PD5)
+        # 绑定复选框槽函数
+        self.checkBox.stateChanged.connect(lambda: self.checkbox_slot(self.checkBox, curve1))
+        self.checkBox_2.stateChanged.connect(lambda: self.checkbox_slot(self.checkBox_2, curve2))
+        self.checkBox_3.stateChanged.connect(lambda: self.checkbox_slot(self.checkBox_3, curve3))
+        self.checkBox_4.stateChanged.connect(lambda: self.checkbox_slot(self.checkBox_4, curve4))
+        self.checkBox_5.stateChanged.connect(lambda: self.checkbox_slot(self.checkBox_5, curve5))
+
+
+    def set_graphic_line_widget_fig(self, gridLayout_name=None, x_label=None, y_label=None, data_1=None, data_2=None, data_3=None, data_4=None, 
+                                    data_5=None, curve_name1=None, curve_name2=None, curve_name3=None, curve_name4=None, curve_name5=None):
+        """
+        图表设置
+        """
+        self.graphic_line_plot_widget = pg.PlotWidget()
+        gridLayout_name.addWidget(self.graphic_line_plot_widget, 0, 0)
+        GraphicResultWindow.plot_widget_ui(self.graphic_line_plot_widget, title="", x_label=x_label,
+                                           y_label=y_label)
+        self.legend = pg.LegendItem(offset=(0, 1))
+        self.legend.setParentItem(self.graphic_line_plot_widget.graphicsItem())
+
+        self.legend.clear()
+        curve1 = self.graphic_line_plot_widget.plot(pen=pg.mkPen({'color': self.get_color(), 'width': 2}),
+                                                    x=list(range(len(self.Date_PD1))), y=self.Date_PD1)
+        curve2 = self.graphic_line_plot_widget.plot(pen=pg.mkPen({'color': self.get_color(), 'width': 2}),
+                                                    x=list(range(len(self.Date_PD2))), y=self.Date_PD2)
+        curve3 = self.graphic_line_plot_widget.plot(pen=pg.mkPen({'color': self.get_color(), 'width': 2}),
+                                                    x=list(range(len(self.Date_PD3))), y=self.Date_PD3)
+        curve4 = self.graphic_line_plot_widget.plot(pen=pg.mkPen({'color': self.get_color(), 'width': 2}),
+                                                    x=list(range(len(self.Date_PD4))), y=self.Date_PD4)
+        curve5 = self.graphic_line_plot_widget.plot(pen=pg.mkPen({'color': self.get_color(), 'width': 2}),
+                                                    x=list(range(len(self.Date_PD5))), y=self.Date_PD5)
+        self.legend.addItem(curve1, curve_name1)
+        self.legend.addItem(curve2, curve_name2)
+        self.legend.addItem(curve3, curve_name3)
+        self.legend.addItem(curve4, curve_name4)
+        self.legend.addItem(curve5, curve_name5)
+        # 绑定复选框槽函数
+        self.checkBox.stateChanged.connect(lambda: self.checkbox_slot(self.checkBox, curve1))
+        self.checkBox_2.stateChanged.connect(lambda: self.checkbox_slot(self.checkBox_2, curve2))
+        self.checkBox_3.stateChanged.connect(lambda: self.checkbox_slot(self.checkBox_3, curve3))
+        self.checkBox_4.stateChanged.connect(lambda: self.checkbox_slot(self.checkBox_4, curve4))
+        self.checkBox_5.stateChanged.connect(lambda: self.checkbox_slot(self.checkBox_5, curve5))
+
+
+    def checkbox_slot(self, checkbox, line):
+        '''
+        绑定复选框槽函数
+        '''
+        if checkbox.isChecked():
+            self.line_chart.addItem(line)
+        else:
+            self.line_chart.removeItem(line)
+
+    def button_init(self):
+        '''
+        绑定按钮槽函数
+        '''
+        # Start
+        self.Start_Btn.clicked.connect(self.start_event)
+        # Abort
+        self.Abort_Btn.clicked.connect(self.abort_event)
+
+    def start_event(self):
+        '''
+        start
+        '''
+        if not self._prepare_status:
+            QMessageBox.warning(self, "警告", "Calibration is not ready yet!")
+            return
+        QMessageBox.warning(self, "提示", "Start!")
+
+    def abort_event(self):
+        '''
+        abort
+        '''
+        abort = QMessageBox.question(self, "确认", "Abort?", QMessageBox.Yes | QMessageBox.No)
+        if abort == QMessageBox.Yes:
+            # 终止流程
+            # pass
+            return
+
+    def adt_input_no_focus(self, check_type, input):
+        '''
+        单个输入框失去焦距时限定操作
+        '''
+        if check_type not in self._input_range:
+            input.clear()
+            return
+        # 取出边界
+        left = self._input_range[check_type]["left"]
+        right = self._input_range[check_type]["right"]
+        # 获取text
+        num = input.text()
+        # 如果有小数点
+        try:
+            if "." in num:
+                num = float(num)
+            else:
+                num = int(num)
+        except ValueError:
+            input.clear()
+            return
+        # 超标
+        if num < left:
+            input.setText(str(left))
+        if num > right:
+            input.setText(str(right))
+
+    def pulse_validator(self):
+        self.Mea_Edit.setValidator(QtGui.QIntValidator())
+
+    def adt_input_range_init(self):
+        '''
+        输入框范围限定
+        '''
+        # 焦点设置
+        self.Start_Edit.editingFinished.connect(
+            lambda: self.adt_input_no_focus("start", self.Start_Edit)
+        )
+        self.End_Edit.editingFinished.connect(
+            lambda: self.adt_input_no_focus("end", self.End_Edit)
+        )
+        self.Step_Edit.editingFinished.connect(
+            lambda: self.adt_input_no_focus("step", self.Step_Edit)
+        )
+        self.Mea_Edit.editingFinished.connect(
+            lambda: self.adt_input_no_focus("pulse", self.Mea_Edit)
+        )
+
+    @staticmethod
+    def time_factory(start_time=(2023, 1, 1, 0, 0, 0, 0, 0, 0), end_time=(2023, 11, 8, 23, 59, 59, 0, 0, 0)):
+        start = time.mktime(start_time)  # 生成开始时间戳
+        end = time.mktime(end_time)  # 生成结束时间戳
+        t = random.randint(start, end)  # 在开始和结束时间戳中随机取出一个
+        date_tuple = time.localtime(t)  # 将时间戳生成时间元组
+        date = time.strftime("%Y-%m-%d %H:%M:%S", date_tuple)  # 将时间元组转成格式化字符串
+        return date
+
+    def get_table_data(self):
+        time_lst = []
+        for i in range(10):
+            time_lst.append(self.time_factory())
+
+        for i in range(len(self.nm_name)):
+            line_lst = []
+            for j in range(10):
+                line_lst.append(round(random.uniform(10, 18), 2))
+            # print(line_lst, 'line_lst+++++++++++++')
+            self.all_lst.append(line_lst)
+        self.all_lst.insert(0, time_lst)
+
+        row = len(self.all_lst[0])
+        col = len(self.all_lst)
+        for i in range(row):   # 行循环
+            for j in range(col):  # 列循环
+                self.tableWidget.setRowCount(row)  # 设置表格行数
+                self.tableWidget.setColumnCount(col)  # 设置表格列数
+                self.tableWidget.setHorizontalHeaderLabels(
+                    self.para_name + self.nm_name)  # 给tableWidget设置行列表头
+                table_item = str(self.all_lst[j][i])
+                # 该字符串类型的数据新建为tableWidget元素
+                new_item = QTableWidgetItem(table_item)
+                new_item.setTextAlignment(
+                    Qt.AlignHCenter | Qt.AlignVCenter)  # 显示为水平居中、垂直居中
+                # 在表格第i行第j列显示newItem元素
+                self.tableWidget.setItem(i, j, new_item)
+
+        # 按照第1列排序，默认降序
+        self.tableWidget.sortItems(0, Qt.DescendingOrder)
+        # print(self.all_lst, 'line_lst--------------------')
+
+    def set_name(self):
+        self.time_value.setText(self.tableWidget.item(0, 0).text())
+
+    def export_to_excel(self):
+        right_len = len(self.nm_name)
+        # 创建工作簿对象
+        book = openpyxl.Workbook()
+        sheet = book.active
+        sheet.title = "Normalization Raw Data"
+        sheet.column_dimensions['A'].width = 22
+        alignment = openpyxl.styles.Alignment(horizontal='center', vertical="center")
+
+        data = {
+            "Calibration time": self.time_value.text(),
+            "Measurement pulse": self.Mea_Edit.text(),
+            "Wavelength(nm)": self.nm_name,
+            "D1": [1 for _ in range(right_len)],
+            "D2": [self.tableWidget.item(0, i + 1).text() for i in range(right_len)],
+            "Standard Reflectivity": [1 for _ in range(right_len)],
+            "D2/D1": [self.tableWidget.item(0, i + 1).text() for i in range(right_len)]
+        }
+
+        # 往表中写入内容
+        row, col = 1, 1
+
+        for title, value in data.items():
+            sheet.cell(row=row, column=col).alignment = alignment
+            sheet.cell(row=row, column=col).value = title
+            if isinstance(value, str):
+                col += 1
+                sheet.cell(row=row, column=col).value = value
+                sheet.cell(row=row, column=col).alignment = alignment
+            if isinstance(value, list):
+                for v in value:
+                    col += 1
+                    sheet.cell(row=row, column=col).value = v
+                    sheet.cell(row=row, column=col).alignment = alignment
+            row += 1
+            col = 1
+        # 合并单元格
+        sheet.merge_cells(f"B1:{chr(ord('B')+right_len-1)}{1}")
+        sheet.merge_cells(f"B2:{chr(ord('B')+right_len-1)}{2}")
+        file_directory = QFileDialog.getExistingDirectory(self, "选择导出该文件的文件夹")
+        # 保存表格
+        book.save(os.path.join(file_directory, "Normalization Raw Data.xlsx"))
+***************************************************************************************************
 all_lst = []
 
 para_name = ['Calibration time']
