@@ -1,3 +1,52 @@
+let keyObj = {
+        Avg: [
+          "internalAvg",
+          "externalAvg",
+          "totalAvg",
+          "targetAvg",
+          "salesVolumeAvg",
+          "lossRateAvg",
+        ],
+        Sum: [
+          "internalSum",
+          "externalSum",
+          "totalSum",
+          "targetSum",
+          "salesVolumeSum",
+          "lossRateSum",
+        ],
+        Code: ["aaa", "bbb", "ccc", "ddd", "eee", "fff"], // 后续新增
+      };
+      let arr = Object.keys(keyObj);
+      let sec = Object.values(keyObj);
+      console.log(arr);
+      console.log(sec);
+      let internalLossCost = {};
+      let externalLossCost = {};
+      let totalLoss = {};
+      let targetValue = {};
+      let sales = {};
+      let qualityLossRate = {};
+      let v = {};
+
+      for (let idx = 0; idx < sec.length; idx++) {
+        for (let i = 0; i < sec[idx].length; i++) {
+          internalLossCost[arr[idx]] = sec[idx][0];
+          externalLossCost[arr[idx]] = sec[idx][1];
+          totalLoss[arr[idx]] = sec[idx][2];
+          targetValue[arr[idx]] = sec[idx][3];
+          sales[arr[idx]] = sec[idx][4];
+          qualityLossRate[arr[idx]] = sec[idx][5];
+        }
+      }
+      console.log(internalLossCost, "11");
+      console.log(externalLossCost, "22");
+      console.log(totalLoss, "33");
+      console.log(targetValue, "44");
+      console.log(sales, "55");
+      console.log(qualityLossRate, "66");
+      console.log(sec, "00000");
+***************************************************************************************************************
 import os
 import random
 import time
